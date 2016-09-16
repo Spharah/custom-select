@@ -1,0 +1,22 @@
+<div class="btn-group">
+    <button 
+            class="btn btn-default dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ng-disabled="disabled"
+            >{{placeholder}}
+        <span class="fa fa-angle-down pull-right"></span>
+    </button>
+<div class="dropdown-menu">
+    <input type="search" class="form-control" ng-model="searchFilter" placeholder="{{searchLabel}}">
+    <ul>        
+        <li ng-repeat="option in options | selectFilter : displayName : searchFilter"
+            ng-click="setSelectedOption(this)"
+            ng-class="option[displayName] == placeholder ? 'selected' : null">{{option[displayName]}}
+        </li>        
+    </ul>
+    <span ng-show="options.length == 0">No records found...</span>
+    </div>    
+</div>
