@@ -1,2 +1,2 @@
 # custom-select
-Responsive searchable drobdown for AngularJS 
+Responsive searchable dropdown for AngularJS 
