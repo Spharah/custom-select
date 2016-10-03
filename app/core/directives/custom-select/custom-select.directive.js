@@ -34,7 +34,8 @@
             ngModel.$formatters.push(function(value){
                 if(value !== undefined){   
                     scope.placeholder = value[scope.displayName];
-                    ngModel.$setViewValue(value);                     
+                    ngModel.$setViewValue(value);  
+                    ngModel.$setPristine();
                     return value;
                 }                   
             });
@@ -42,6 +43,8 @@
             scope.setSelectedOption = function(selected) {    
                 scope.placeholder = selected.option[scope.displayName];
                 ngModel.$setViewValue(selected.option);
+                ngModel.$setDirty();
+                ngModel.$setTouched();
             }
         }        
     }
