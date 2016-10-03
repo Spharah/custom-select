@@ -23,11 +23,23 @@
             if (!(match)) {
       throw ('invalid expression : '+ expression + ' in ');
     }
+
+            
+            
+       var options = scope.$eval(match[8]);
+        angular.forEach(options,function( item){    
+           console.log(item)
+       })    
+     
+    
+            
+        
           
             // Extract the parts from the ngOptions expression
 
     // The variable name for the value of the item in the collection
     var valueName = match[5] || match[7]; 
+       
             
     // The variable name for the key of the item in the collection
     var keyName = match[6];  
@@ -43,6 +55,7 @@
     var selectAsFn = selectAs && $parse(selectAs);  
     var viewValueFn = selectAsFn || valueFn;  
     var trackByFn = trackBy && $parse(trackBy); 
+            
 
     // Get the value by which we are going to track the option
     // if we have a trackFn then use that (passing scope and locals)

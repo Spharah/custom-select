@@ -6,7 +6,7 @@
     
     function MainController($scope){
         $scope.options = [];        
-        for(var i = 1; i <= 1800; i++){
+        for(var i = 1; i <= 15; i++){
             $scope.options.push({value : i, name : 'Item '+i });
         }
         

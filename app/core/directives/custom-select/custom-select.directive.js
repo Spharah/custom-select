@@ -32,13 +32,16 @@
                 scope.templateUrl = customSelectConfig.templateUrl();
                         
             ngModel.$formatters.push(function(value){
-                if(value !== undefined)
+                if(value !== undefined){   
                     scope.placeholder = value[scope.displayName];
+                    ngModel.$setViewValue(value);                     
+                    return value;
+                }                   
             });
            
-            scope.setSelectedOption = function(selected){                
-                ngModel.$setViewValue(selected.option);
+            scope.setSelectedOption = function(selected) {    
                 scope.placeholder = selected.option[scope.displayName];
+                ngModel.$setViewValue(selected.option);
             }
         }        
     }
