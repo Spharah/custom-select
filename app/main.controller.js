@@ -15,5 +15,6 @@
         };
         
         $scope.MyOptions2 = $scope.options[5];
+         //$scope.original = $scope.options[5];
     }
 })()

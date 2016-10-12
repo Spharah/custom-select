@@ -1,7 +1,7 @@
-(function(){
+(function () {
     'use strict';
-     angular.module('app.core').directive('customSelect',customSelect);    
-    customSelect.$inject =['customSelectConfig', '$log', '$parse'];    
+    angular.module('app.core').directive('customSelect', customSelect);
+    customSelect.$inject = ['customSelectConfig', '$log', '$parse'];
     function customSelect(customSelectConfig, log, $parse){
                 
         //create instance of the directive
@@ -31,7 +31,7 @@
             if(scope.templateUrl === null || scope.templateUrl === undefined)                
                 scope.templateUrl = customSelectConfig.templateUrl();
                         
-            ngModel.$formatters.push(function(value){
+            ngModel.$formatters.push(function(value) {
                 if(value !== undefined){   
                     scope.placeholder = value[scope.displayName];
                     ngModel.$setViewValue(value);  

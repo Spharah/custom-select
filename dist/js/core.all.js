@@ -2,10 +2,10 @@
     'use strict';
     angular.module('app.core', []);
 })()
-;(function(){
+;(function () {
     'use strict';
-     angular.module('app.core').directive('customSelect',customSelect);    
-    customSelect.$inject =['customSelectConfig', '$log', '$parse'];    
+    angular.module('app.core').directive('customSelect', customSelect);
+    customSelect.$inject = ['customSelectConfig', '$log', '$parse'];
     function customSelect(customSelectConfig, log, $parse){
                 
         //create instance of the directive
@@ -35,7 +35,7 @@
             if(scope.templateUrl === null || scope.templateUrl === undefined)                
                 scope.templateUrl = customSelectConfig.templateUrl();
                         
-            ngModel.$formatters.push(function(value){
+            ngModel.$formatters.push(function(value) {
                 if(value !== undefined){   
                     scope.placeholder = value[scope.displayName];
                     ngModel.$setViewValue(value);  
@@ -123,21 +123,15 @@
         }
         return directive;
         
-        function link(scope, el, attr, ngModel){
-            
-            //comprehension_expression
-            
+        function link(scope, el, attr, ngModel){            
+            //comprehension_expression            
             var NG_OPTIONS_REGEXP = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
-            var expression  = attr.selectOptions;
-           
-            
+            var expression  = attr.selectOptions;                       
             var match = expression.match(NG_OPTIONS_REGEXP);
             if (!(match)) {
       throw ('invalid expression : '+ expression + ' in ');
     }
-
-            
-            
+   
        var options = scope.$eval(match[8]);
         angular.forEach(options,function( item){    
            console.log(item)
@@ -194,6 +188,64 @@
       return locals;
     };    
             
+        }
+    }
+})()
+;(function () {
+    'use strict';
+    angular.module('app.core').directive('numbersOnly', numbersOnly);
+    
+    numbersOnly.$inject = [];
+    
+    function numbersOnly(){
+        var directive ={            
+            require: '?ngModel',
+            scope:{decimalPlace:'='},
+            link:link 
+        };
+        return directive;
+        
+        function link(scope, el, attr, ngModel){
+            if(!ngModel)
+                throw('ng-model is requred.');
+            
+            console.log(scope.decimalPlace);
+            
+            ngModel.$parsers.push(function(val) {
+                
+            if (angular.isUndefined(val))
+                val = '';
+         
+            var clean = val.replace(/[^-0-9\.]/g, '');
+            var negativeCheck = clean.split('-');
+			var decimalCheck = clean.split('.');
+                
+            if(!angular.isUndefined(negativeCheck[1])) {
+                negativeCheck[1] = negativeCheck[1].slice(0, negativeCheck[1].length);
+                clean = negativeCheck[0] + '-' + negativeCheck[1];
+                if(negativeCheck[0].length > 0) {
+                	clean = negativeCheck[0];
+                }                
+            }
+                
+            if(!angular.isUndefined(decimalCheck[1])) {
+                decimalCheck[1] = decimalCheck[1].slice(0, angular.isUndefined(scope.decimalPlace) ? 2 : scope.decimalPlace);
+                clean = decimalCheck[0] + '.' + decimalCheck[1];
+            }
+
+                if (val !== clean) {
+                  ngModel.$setViewValue(clean);
+                  ngModel.$render();
+                }
+                return clean;            
+            });
+            
+            // Bind keypress event to the element
+            el.bind('keypress', function(event) {
+            if(event.keyCode === 32) {
+                  event.preventDefault();
+                }
+             });                      
         }
     }
 })()

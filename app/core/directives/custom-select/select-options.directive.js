@@ -11,21 +11,15 @@
         }
         return directive;
         
-        function link(scope, el, attr, ngModel){
-            
-            //comprehension_expression
-            
+        function link(scope, el, attr, ngModel){            
+            //comprehension_expression            
             var NG_OPTIONS_REGEXP = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
-            var expression  = attr.selectOptions;
-           
-            
+            var expression  = attr.selectOptions;                       
             var match = expression.match(NG_OPTIONS_REGEXP);
             if (!(match)) {
       throw ('invalid expression : '+ expression + ' in ');
     }
-
-            
-            
+   
        var options = scope.$eval(match[8]);
         angular.forEach(options,function( item){    
            console.log(item)

@@ -2,13 +2,33 @@
 <head>
     <title>test</title>
     <link href="contents/bootstrap/css/bootstrap.min.css" type="text/css" rel=stylesheet>
-    <link href="dist/css/core.all.min.css" type="text/css" rel=stylesheet>
+    <link href="dist/css/core.all.css" type="text/css" rel=stylesheet>
     <link href="contents/font-awesome/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+        .form-control.ng-invalid,
+        custom-select.ng-invalid button {
+            border:1px solid red;
+        }
+        
+        .form-control.ng-valid,
+        custom-select.ng-valid button {
+            border: 1px solid #4cae4c;
+        }
+
+        
+    </style>
     </head>
     <body class="container" ng-controller="MainController">
+        <br>
         <form novalidate name="UserForm"> 
         <div class="row">
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="Quantity" numbers-only decimal-place=9 />
+            </div>    
+        </div>
+        <div class="row">
         <div class="col-md-4">
+
             <custom-select 
                            name="myOptions"
                            class="custom-select"
@@ -18,9 +38,10 @@
                            data-search-label="Search username"
                            data-disabled="false"
                            required>
-            </custom-select>
-            </div>
-            <div class="col-md-8">
+            </custom-select></div>
+           
+
+            <div class="col-md-8" >
             <custom-select 
                            name="myOtpions2"
                            class="custom-select"
@@ -33,15 +54,8 @@
                            required>
             </custom-select>
             </div>
-        </div>
-            <div class="row">
-        <div class="col-md-4">
-           <p style="word-wrap:break-word">{{UserForm.myOptions}}</p> 
-            </div>
-            <div class="col-md-8">
-            {{UserForm.myOtpions2}}
-            </div>
-        </div>
+        </div>      
+            
     <br>
         <input type="button" class="btn btn-block btn-success" ng-disabled="UserForm.$invalid" value="Submit"/>
         </form>
