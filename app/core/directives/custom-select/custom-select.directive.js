@@ -115,7 +115,7 @@
                 
                 if(scope.multiselect) {                    
                     var item = $.grep(scope.multiselectModel, function(e){
-                        return e.value == selected.option.value;
+                         return e[scope.displayValue] == selected.option[scope.displayValue];
                     });
                 
                     if(item.length === 0)
