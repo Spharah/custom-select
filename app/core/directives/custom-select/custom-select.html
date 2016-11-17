@@ -9,14 +9,20 @@
             >{{placeholder}}
         <span class="fa fa-angle-down pull-right"></span>
     </button>
-<div class="dropdown-menu">
+<div class="dropdown-menu" ng-click="multiselect ? $event.stopPropagation() : null">
     <input type="search" class="form-control" ng-model="searchFilter" placeholder="{{searchLabel}}">
     <ul>        
         <li ng-repeat="option in options | selectFilter : displayName : searchFilter"
             ng-click="setSelectedOption(this)"
-            ng-class="option[displayName] == placeholder ? 'selected' : null">{{option[displayName]}}
-        </li>        
+            ng-class="isSelected(this) ? 'selected' : null"> {{option[displayName]}}
+        </li>         
     </ul>
-    <span ng-show="options.length == 0">No records found...</span>
+    <hr ng-if="multiselect"/>
+<!--    <span ng-show="options.length == 0">No records found...</span>-->
+        <div class="col-md-1" ng-show="multiselect">
+            <span class="clickable" ng-click="selectAll()"><i class="fa fa-check-circle" aria-hidden="true"></i> Select all</span> &nbsp;&nbsp;
+            <span class="clickable" ng-click="clearAll()"><i class="fa fa-times-circle" aria-hidden="true"></i> Clear all</span>
+        </div>
+        
     </div>    
 </div>

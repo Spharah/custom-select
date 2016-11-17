@@ -34,9 +34,11 @@
                            class="custom-select"
                            ng-model="MyOptions"
                            data-options="options"
-                           data-display-name="name"
+                           data-display-name="name"                           
+                           data-display-value="value"
                            data-search-label="Search username"
                            data-disabled="false"
+                           data-multiselect="true"
                            required>
             </custom-select></div>
            
@@ -54,12 +56,25 @@
                            required>
             </custom-select>
             </div>
-        </div>      
+        </div> 
+            <br>
+            <div id="pricing-container" style="width:100%;overflow:hidden">
+                <table id="pricing" style="width:2000px">
+                    <tr>
+                        <td>Some thing here <span class="pull-right">test</span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            
+            <fixed-scroll position="bottom" container-id="pricing-container" element-id="pricing"></fixed-scroll>
             
     <br>
         <input type="button" class="btn btn-block btn-success" ng-disabled="UserForm.$invalid" value="Submit"/>
         </form>
-    <script type="application/javascript" src="scripts/jquery-2.0.0.min.js"></script>    
+    <script type="application/javascript" src="scripts/jquery-2.0.0.min.js"></script>   
+        
+    <script type="application/javascript" src="scripts/underscore.min.js"></script>
     <script type="text/javascript" src="scripts/angular.min.js"></script>
     <script type="text/javascript" src="contents/bootstrap/js/bootstrap.min.js" ></script>
     <script type="text/javascript" src="app/app.module.js"></script>

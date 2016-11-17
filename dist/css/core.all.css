@@ -10,6 +10,10 @@ custom-select div{
 
 custom-select button{
     text-align: left !important;
+    overflow: hidden;
+    word-wrap: normal;
+    word-spacing: inherit;
+    word-break: normal;
 }
 
 custom-select div.dropdown-menu{
@@ -65,5 +69,18 @@ custom-select button span.fa{
 margin-top:2px;    
 }
 
+custom-select hr{
+    margin-bottom:5px;
+    padding:0px;
+}
+
+
+.clickable{
+    cursor:pointer;
+}
+
+.clickable:hover{
+    color:gray;
+}
 
 
