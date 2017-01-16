@@ -11,8 +11,8 @@
     </button>
 <div class="dropdown-menu" ng-click="multiselect ? $event.stopPropagation() : null">
     <input type="search" class="form-control" ng-model="searchFilter" placeholder="{{searchLabel}}">
-    <ul>        
-        <li ng-repeat="option in options | selectFilter : displayName : searchFilter"
+    <ul>  
+        <li ng-repeat="option in options | orderBy : 'displayName': false | selectFilter : displayName : searchFilter"
             ng-click="setSelectedOption(this)"
             ng-class="isSelected(this) ? 'selected' : null"> {{option[displayName]}}
         </li>         
