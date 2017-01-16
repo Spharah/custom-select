@@ -44,12 +44,25 @@
            
 
             <div class="col-md-8" >
+<!--
             <custom-select 
                            name="myOtpions2"
                            class="custom-select"
                            ng-model="MyOptions2"
                            data-options=options
                            data-display-name="name"
+                           data-search-label="Search here"
+                           data-placeholder="Please select"
+                           ng-change="validate()"  
+                           required>
+            </custom-select>
+-->
+                <custom-select 
+                           name="myOtpions2"
+                           class="custom-select"
+                           ng-model="MyOptions2"
+                           data-options=products
+                           data-display-name="Name"
                            data-search-label="Search here"
                            data-placeholder="Please select"
                            ng-change="validate()"  

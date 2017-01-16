@@ -2,6 +2,65 @@
     'use strict';
     angular.module('app.core', []);
 })()
+;(function(){
+    'use strict';
+    
+    angular.module('app.core').directive('fixedScroll', fixedScroll);
+    
+    fixedScroll.$inject = [];
+    
+    function fixedScroll(){
+        var directive = {
+            restrict:'E',
+            templateUrl:"core.tpl.fixed-scroll.html",
+            scope:{
+                position:'=',
+                containerId:'@',
+                elementId:'@'
+            },
+            link:link
+        };
+        return directive;
+        
+        function link(scope, elem, attr, ctrl) {            
+            angular.element(document).ready(function() {
+            
+            //Get the element 
+            var targetContainer = angular.element(document.querySelector('#'+scope.containerId ));
+            var targetElement = angular.element(document.querySelector('#'+scope.elementId ));
+            var scrollContainer = elem.find('.fixed-scroll-container');
+            var scroll = elem.find('.fixed-scroll');
+
+            scrollContainer.css('width', targetContainer.width()+'px');
+            scroll.css('width', targetElement.width()+'px');
+                        
+            // scroll the target element when the fixed scroll bar is scrolled
+            scrollContainer.on('scroll', function(){
+                  targetContainer.scrollLeft($(this).scrollLeft());
+              });  
+               
+            //Watch and update scroll width when table width changes    
+            scope.$watch(function () {
+                return targetElement.width(); 
+            }, function (nv, ov) {
+                    if (nv != ov) {
+                        scroll.css('width', nv + 'px');                        
+                    }
+                });
+                
+            //Watch and update scroll width when table container width changes      
+            scope.$watch(function(){
+                return targetContainer.width();
+            },function(nv, ov){
+                if(nv != ov){
+                     scrollContainer.css('width', nv + 'px');
+                }                
+            });
+            
+            }) 
+        }
+    }    
+})()
 ;(function () {
     'use strict';
     angular.module('app.core').directive('customSelect', customSelect);
@@ -276,65 +335,6 @@
         }
     }
 })()
-;(function(){
-    'use strict';
-    
-    angular.module('app.core').directive('fixedScroll', fixedScroll);
-    
-    fixedScroll.$inject = [];
-    
-    function fixedScroll(){
-        var directive = {
-            restrict:'E',
-            templateUrl:"core.tpl.fixed-scroll.html",
-            scope:{
-                position:'=',
-                containerId:'@',
-                elementId:'@'
-            },
-            link:link
-        };
-        return directive;
-        
-        function link(scope, elem, attr, ctrl) {            
-            angular.element(document).ready(function() {
-            
-            //Get the element 
-            var targetContainer = angular.element(document.querySelector('#'+scope.containerId ));
-            var targetElement = angular.element(document.querySelector('#'+scope.elementId ));
-            var scrollContainer = elem.find('.fixed-scroll-container');
-            var scroll = elem.find('.fixed-scroll');
-
-            scrollContainer.css('width', targetContainer.width()+'px');
-            scroll.css('width', targetElement.width()+'px');
-                        
-            // scroll the target element when the fixed scroll bar is scrolled
-            scrollContainer.on('scroll', function(){
-                  targetContainer.scrollLeft($(this).scrollLeft());
-              });  
-               
-            //Watch and update scroll width when table width changes    
-            scope.$watch(function () {
-                return targetElement.width(); 
-            }, function (nv, ov) {
-                    if (nv != ov) {
-                        scroll.css('width', nv + 'px');                        
-                    }
-                });
-                
-            //Watch and update scroll width when table container width changes      
-            scope.$watch(function(){
-                return targetContainer.width();
-            },function(nv, ov){
-                if(nv != ov){
-                     scrollContainer.css('width', nv + 'px');
-                }                
-            });
-            
-            }) 
-        }
-    }    
-})()
 ;(function () {
     'use strict';
     angular.module('app.core').directive('numbersOnly', numbersOnly);
@@ -391,5 +391,5 @@
         }
     }
 })()
-;angular.module('app.core').run(['$templateCache', function($templateCache) {$templateCache.put('core.tpl.custom-select.html','<div class="btn-group">\r\n    <button \r\n            class="btn btn-default dropdown-toggle"\r\n            type="button"\r\n            data-toggle="dropdown"\r\n            aria-haspopup="true"\r\n            aria-expanded="false"\r\n            ng-disabled="disabled"\r\n            >{{placeholder}}\r\n        <span class="fa fa-angle-down pull-right"></span>\r\n    </button>\r\n<div class="dropdown-menu" ng-click="multiselect ? $event.stopPropagation() : null">\r\n    <input type="search" class="form-control" ng-model="searchFilter" placeholder="{{searchLabel}}">\r\n    <ul>  \r\n        <li ng-repeat="option in options | orderBy : \'displayName\': false | selectFilter : displayName : searchFilter"\r\n            ng-click="setSelectedOption(this)"\r\n            ng-class="isSelected(this) ? \'selected\' : null"> {{option[displayName]}}\r\n        </li>         \r\n    </ul>\r\n    <hr ng-if="multiselect"/>\r\n<!--    <span ng-show="options.length == 0">No records found...</span>-->\r\n        <div class="col-md-1" ng-show="multiselect">\r\n            <span class="clickable" ng-click="selectAll()"><i class="fa fa-check-circle" aria-hidden="true"></i> Select all</span> &nbsp;&nbsp;\r\n            <span class="clickable" ng-click="clearAll()"><i class="fa fa-times-circle" aria-hidden="true"></i> Clear all</span>\r\n        </div>\r\n        \r\n    </div>    \r\n</div>\r\n');
-$templateCache.put('core.tpl.fixed-scroll.html','<div class="fixed-scroll-container" style="overflow:auto; position:fixed;bottom:0">\r\n    <div class="fixed-scroll">&nbsp;</div>\r\n</div>');}]);
+;angular.module('app.core').run(['$templateCache', function($templateCache) {$templateCache.put('core.tpl.fixed-scroll.html','<div class="fixed-scroll-container" style="overflow:auto; position:fixed;bottom:0">\r\n    <div class="fixed-scroll">&nbsp;</div>\r\n</div>');
+$templateCache.put('core.tpl.custom-select.html','<div class="btn-group">\r\n    <button \r\n            class="btn btn-default dropdown-toggle"\r\n            type="button"\r\n            data-toggle="dropdown"\r\n            aria-haspopup="true"\r\n            aria-expanded="false"\r\n            ng-disabled="disabled"\r\n            >{{placeholder}}\r\n        <span class="fa fa-angle-down pull-right"></span>\r\n    </button>\r\n<div class="dropdown-menu" ng-click="multiselect ? $event.stopPropagation() : null">\r\n    <input type="search" class="form-control" ng-model="searchFilter" placeholder="{{searchLabel}}">\r\n    <ul>  \r\n        <li ng-repeat="option in options | orderBy : displayName : false | selectFilter : displayName : searchFilter"\r\n            ng-click="setSelectedOption(this)"\r\n            ng-class="isSelected(this) ? \'selected\' : null"> {{option[displayName]}}\r\n        </li>         \r\n    </ul>\r\n    <hr ng-if="multiselect"/>\r\n<!--    <span ng-show="options.length == 0">No records found...</span>-->\r\n        <div class="col-md-1" ng-show="multiselect">\r\n            <span class="clickable" ng-click="selectAll()"><i class="fa fa-check-circle" aria-hidden="true"></i> Select all</span> &nbsp;&nbsp;\r\n            <span class="clickable" ng-click="clearAll()"><i class="fa fa-times-circle" aria-hidden="true"></i> Clear all</span>\r\n        </div>\r\n        \r\n    </div>    \r\n</div>\r\n');}]);
