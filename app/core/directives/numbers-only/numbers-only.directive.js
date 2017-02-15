@@ -5,7 +5,7 @@
     numbersOnly.$inject = [];
     
     function numbersOnly(){
-        var directive ={            
+        var directive ={ 
             require: '?ngModel',
             scope:{decimalPlace:'='},
             link:link 
@@ -21,6 +21,9 @@
             if (angular.isUndefined(val))
                 val = '';
          
+            if(typeof val == "number")
+                val = ''+val;
+                
             var clean = val.replace(/[^-0-9\.]/g, '');
             var negativeCheck = clean.split('-');
 			var decimalCheck = clean.split('.');

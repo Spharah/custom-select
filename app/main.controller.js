@@ -19,8 +19,9 @@
         
         $scope.lidPrice = 30;
         
-        $scope.rollBack = function(lidPrice){
+        $scope.rollBack = function(){
             $scope.$broadcast('rollBackValue');
+            console.log('broadcast fired');
         }
     }
 })()

@@ -9,9 +9,9 @@
     
     function inputRollback(){
         var directive = {
-            restrict :'A',
+            restrict: 'A',
+            replace:false,
             require:'ngModel',
-            scope:{rollbackEvent:'@'},
             link:link
         };
         return directive;
@@ -25,7 +25,7 @@
             });
 
             // revert value to previous value
-            scope.$on(scope.rollBackEvent, function(ev, args) {
+            scope.$on(attr.rollbackEvent, function(ev, args) {
                 if(lastCommittedValue === undefined)
                     return;
                 
