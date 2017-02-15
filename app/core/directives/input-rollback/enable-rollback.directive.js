@@ -11,7 +11,7 @@
         var directive = {
             restrict :'A',
             require:'ngModel',
-            scope:{rollBackEvent:'@'},
+            scope:{rollbackEvent:'@'},
             link:link
         };
         return directive;
