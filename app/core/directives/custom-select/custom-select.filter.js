@@ -3,7 +3,7 @@
     angular.module('app.core').filter('selectFilter', selectFilter);      
     function selectFilter(){        
         return function(data, key, value){
-            if(data.length <= 0) return;
+            if(data === undefined || data.length <= 0) return;
         
             if(key === undefined || value === undefined) return data;
 

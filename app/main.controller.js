@@ -2,9 +2,9 @@
     'use strict';
     angular.module('app').controller('MainController', MainController);
     
-    MainController.$inject =['$scope'];
+    MainController.$inject =['$scope', '$rootScope'];
     
-    function MainController($scope){
+    function MainController($scope, $rootScope){
         $scope.options = [];        
         for(var i = 1; i <= 15; i++){
             $scope.options.push({value : i, name : 'Item '+i });
@@ -16,5 +16,11 @@
         
         $scope.MyOptions2 = $scope.options[5];
          //$scope.original = $scope.options[5];
+        
+        $scope.lidPrice = 30;
+        
+        $scope.rollBack = function(lidPrice){
+            $scope.$broadcast('rollBackValue');
+        }
     }
 })()
