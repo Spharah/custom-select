@@ -8,6 +8,14 @@ var uglify = require('gulp-uglify');
 var cssmin = require('gulp-cssmin');
 var rename = require('gulp-rename');
 var templateCache = require('gulp-angular-templatecache');
+var del = require('del');
+
+//Clean dist folder
+gulp.task('clean:dist', function(){
+    return del([
+        'dist/**/*'
+    ]);
+});
 
 //Cache template files
 gulp.task('templates',function(){
@@ -51,10 +59,10 @@ gulp.task('css', function(){
 });
 
 // Watch Files For Changes
-gulp.task('watch', function() {
+gulp.task('watch', function() {    
     gulp.watch('app/**/*.js', ['lint', 'scripts']);
     gulp.watch('app/core/**/*.css', ['css']);
-    gulp.watch('app/core/**/*.html', ['lint','templates', 'scripts']);
+    gulp.watch('app/core/**/*.html', ['lint', 'templates', 'scripts']);
 });
 
 // Default Task
