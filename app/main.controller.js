@@ -20,8 +20,14 @@
         $scope.lidPrice = 30;
         
         $scope.rollBack = function(){
-            $scope.$broadcast('rollBackValue');
+            $scope.$broadcast('rollbackValue');
             console.log('broadcast fired');
+        }
+        
+        
+        $scope.clearValue = function(){
+            $scope.$broadcast('resetLastCommittedValue');
+            console.log('reset broadcast fired');
         }
     }
 })()

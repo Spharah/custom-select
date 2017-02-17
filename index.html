@@ -85,6 +85,18 @@
     <br>
         <input type="button" class="btn btn-block btn-success" ng-disabled="UserForm.$invalid" value="Submit"/>
         </form>
+        
+        <div class="row">
+        <div class="col-md-12">
+            <input class="form-control" type="text" ng-model="lidPrice" data-input-rollback numbers-only  />
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-default" ng-click="rollBack()">Clear</button>
+            </div>
+        </div>
+        
     <script type="application/javascript" src="scripts/jquery-2.0.0.min.js"></script>   
         
     <script type="application/javascript" src="scripts/underscore.min.js"></script>

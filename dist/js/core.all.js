@@ -336,8 +336,7 @@
     }    
 })()
 ;(function(){
-'use strict';
-
+    'use strict';
     angular
         .module('app.core')
         .directive('inputRollback', inputRollback);
@@ -345,6 +344,7 @@
     inputRollback.$inject = [];
     
     function inputRollback(){
+        
         var directive = {
             restrict: 'A',
             replace:false,
@@ -353,24 +353,69 @@
         };
         return directive;
         
-        function link(scope, elem, attr, ngModel){                          
-            var lastCommittedValue;
+        function link(scope, elem, attr, ngModel){
             
+            var lastCommittedValue;
+            var rollbackListener = attr.rollbackEvent === undefined ? inputRollbackConfig.getRollbackEvent() : attr.rollbackEvent;
+            var resetRollbacklistener  = attr.resetRollbackEvent === undefined ? inputRollbackConfig.getResetRollbackEvent() : attr.resetRollbackEvent;
+            
+            elem.bind('focus',focusEvent); 
+            scope.$on(rollbackListener, rollbackEvent);
+            scope.$on(resetRollbacklistener, resetRollbackEvent);
+              
             // set last committed value to a variable
-            elem.bind('focus', function(event){
+            function focusEvent(event){
                 lastCommittedValue = ngModel.$modelValue;
-            });
-
+            }
+            
             // revert value to previous value
-            scope.$on(attr.rollbackEvent, function(ev, args) {
+            function rollbackEvent (ev, args) {
                 if(lastCommittedValue === undefined)
                     return;
                 
                ngModel.$setViewValue(lastCommittedValue, false);
                ngModel.$rollbackViewValue();
                lastCommittedValue = undefined;                              
-            });
+            }
+            
+            // clear last committed value
+            function resetRollbackEvent(ev, args){
+                if(lastCommittedValue === undefined)
+                    return;
+                
+                lastCommittedValue = undefined;
+            }
         }
+    }
+})()
+;(function(){
+    angular.module('app.core').provider('inputRollbackConfig', inputRollbackConfig);
+    
+    function inputRollbackConfig(){
+        this.rollbackEvent = 'rollbackValue';
+        this.resetRollbackEvent = 'resetLastCommittedValue';
+        
+        this.$get = function(){            
+            var rollbackEvent = this.rollbackEvent;
+            var resetRollbackEvent = this.resetRollbackEvent;
+            
+            return {
+                getRollbackEvent:function(name){
+                    return rollbackEvent;
+                },
+                getResetRollbackEvent:function(name){
+                    return resetRollbackEvent;
+                }               
+            }
+        }
+        
+        this.setRollbackEvent = function(rollbackEvent){
+            this.rollbackEvent = rollbackEvent;
+        }
+            
+        this.setResetRollbackEvent = function(resetRollbackEvent){
+            this.resetRollbackEvent = resetRollbackEvent;
+        }       
     }
 })()
 ;(function () {
@@ -380,8 +425,10 @@
     numbersOnly.$inject = [];
     
     function numbersOnly(){
-        var directive ={ 
-            require: '?ngModel',
+        var directive = { 
+            restrict:'A',
+            replace:false,
+            require:'?ngModel',
             scope:{decimalPlace:'='},
             link:link 
         };

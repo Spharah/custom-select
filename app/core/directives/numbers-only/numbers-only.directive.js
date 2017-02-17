@@ -5,8 +5,10 @@
     numbersOnly.$inject = [];
     
     function numbersOnly(){
-        var directive ={ 
-            require: '?ngModel',
+        var directive = { 
+            restrict:'A',
+            replace:false,
+            require:'?ngModel',
             scope:{decimalPlace:'='},
             link:link 
         };
