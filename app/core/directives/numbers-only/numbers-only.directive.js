@@ -55,7 +55,12 @@
             if(event.keyCode === 32) {
                   event.preventDefault();
                 }
-             });                      
+             });
+
+             el.bind('focus',function(event){
+                el.select();
+
+             })                    
         }
     }
 })()
