@@ -41,7 +41,7 @@
             
             // Set default value on load
             ngModel.$formatters.push(function(value) {
-                if(value !== undefined){   
+                if(value !== undefined && value !== null){   
                     scope.placeholder = value[scope.displayName];
                     ngModel.$setViewValue(value);  
                     ngModel.$setPristine();
