@@ -86,9 +86,52 @@
         <input type="button" class="btn btn-block btn-success" ng-disabled="UserForm.$invalid" value="Submit"/>
         </form>
         
-        <div class="row">
+        <div class="row" >
         <div class="col-md-12">
-            <input class="form-control" type="text" ng-model="lidPrice" data-input-rollback numbers-only  />
+            <table>
+                
+            <tr ng-repeat="price in pricing">
+                <td>{{price.ClientPricingID}}</td>
+                <td> 
+                    <input 
+                           class="form-control"
+                           type="text"
+                           ng-model="price.PailPrice"
+                           data-input-rollback
+                           numbers-only
+                           rollback-focused-field="pailPrice"
+                           ng-blur="validateValue(price, 'pailPrice')"
+                           />
+                </td>
+                <td><input 
+                           class="form-control"
+                           type="text"
+                           ng-model="price.PailDecorPrice"
+                           data-input-rollback
+                           numbers-only
+                           rollback-focused-field="pailDecorPrice"
+                           ng-blur="validateValue(price, 'pailDecorPrice')"
+                           /></td>
+                <td><input 
+                           class="form-control"
+                           type="text"
+                           ng-model="price.LidPrice"
+                           data-input-rollback
+                           numbers-only
+                           rollback-focused-field="lidPrice"
+                           ng-blur="validateValue(price, 'lidPrice')"
+                           /></td>
+                <td><input 
+                           class="form-control"
+                           type="text"
+                           ng-model="price.LidDecorPrice"
+                           data-input-rollback
+                           numbers-only
+                           rollback-focused-field="lidDecorPrice"
+                           ng-blur="validateValue(price, 'lidDecorPrice')"
+                           /></td>
+                </tr>
+            </table>
             </div>
         </div>
         <div class="row">
