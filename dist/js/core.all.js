@@ -337,98 +337,6 @@
     }    
 })()
 ;(function(){
-    angular.module('app.core').directive('listItemColour', listItemColour);
-    
-    listItemColour.$inject = [];
-    
-    function listItemColour(){
-        var directive = {
-            restrict: 'A',
-            link: link,
-            scope:{
-                colours:'=',
-                itemIndex:'='
-            }
-        };
-        return directive;
-        
-        function link (scope, el, attrs) {
-            
-           setColour(scope.colours[scope.itemIndex % scope.colours.length]);
-            
-            function setColour(colour) {
-                el[0].style.color = colour;
-            }            
-        }        
-    }
-})()
-;(function () {
-    'use strict';
-    angular.module('app.core').directive('numbersOnly', numbersOnly);
-    
-    numbersOnly.$inject = [];
-    
-    function numbersOnly(){
-        var directive = { 
-            restrict:'A',
-            replace:false,
-            require:'?ngModel',
-            scope:{decimalPlace:'='},
-            link:link 
-        };
-        return directive;
-        
-        function link(scope, el, attr, ngModel){
-            if(!ngModel)
-                throw('ng-model is requred.');
-            
-            ngModel.$parsers.push(function(val) {
-                
-            if (angular.isUndefined(val))
-                val = '';
-         
-            if(typeof val == "number")
-                val = ''+val;
-                
-            var clean = val.replace(/[^-0-9\.]/g, '');
-            var negativeCheck = clean.split('-');
-			var decimalCheck = clean.split('.');
-                
-            if(!angular.isUndefined(negativeCheck[1])) {
-                negativeCheck[1] = negativeCheck[1].slice(0, negativeCheck[1].length);
-                clean = negativeCheck[0] + '-' + negativeCheck[1];
-                if(negativeCheck[0].length > 0) {
-                	clean = negativeCheck[0];
-                }                
-            }
-                
-            if(!angular.isUndefined(decimalCheck[1])) {
-                decimalCheck[1] = decimalCheck[1].slice(0, angular.isUndefined(scope.decimalPlace) ? 2 : scope.decimalPlace);
-                clean = decimalCheck[0] + '.' + decimalCheck[1];
-            }
-
-                if (val !== clean) {
-                  ngModel.$setViewValue(clean);
-                  ngModel.$render();
-                }
-                return clean;            
-            });
-            
-            // Bind keypress event to the element
-            el.bind('keypress', function(event) {
-            if(event.keyCode === 32) {
-                  event.preventDefault();
-                }
-             });
-
-             el.bind('focus',function(event){
-                el.select();
-
-             })                    
-        }
-    }
-})()
-;(function(){
     'use strict';
     angular
         .module('app.core')
@@ -518,6 +426,112 @@
         this.setResetRollbackEvent = function(resetRollbackEvent){
             this.resetRollbackEvent = resetRollbackEvent;
         }       
+    }
+})()
+;(function(){
+    angular.module('app.core').directive('listItemColour', listItemColour);
+    
+    listItemColour.$inject = [];
+    
+    function listItemColour(){
+        var directive = {
+            restrict: 'A',
+            link: link,
+            scope:{
+                colours:'=',
+                itemIndex:'='
+            }
+        };
+        return directive;
+        
+        function link (scope, el, attrs) {
+            
+           setColour(scope.colours[scope.itemIndex % scope.colours.length]);
+            
+            function setColour(colour) {
+                el[0].style.color = colour;
+            }            
+        }        
+    }
+})()
+;(function () {
+    'use strict';
+    angular.module('app.core').directive('numbersOnly', numbersOnly);
+
+    numbersOnly.$inject = [];
+
+    function numbersOnly() {
+        var directive = {
+            restrict: 'A',
+            replace: false,
+            require: '?ngModel',
+            scope: {
+                decimalPlace: '=',
+                allowNegative: '='
+            },
+            link: link
+        };
+        return directive;
+
+        function link(scope, el, attr, ngModel) {
+            if (!ngModel)
+                throw ('ng-model is requred.');
+
+            ngModel.$parsers.push(function (val) {
+
+                if (angular.isUndefined(val))
+                    val = '';
+
+                if (typeof val == "number")
+                    val = '' + val;
+
+                var clean;
+                switch (scope.allowNegative) {
+                    case false:
+                        if (scope.decimalPlace === 0)
+                            clean = val.replace(/[^0-9]/g, '');
+                        else
+                            clean = val.replace(/[^0-9\.]/g, '');
+                        break;
+
+                    default:
+                        if (scope.decimalPlace === 0)
+                            clean = val.replace(/[^-0-9]/g, '');
+                        else
+                            clean = val.replace(/[^-0-9\.]/g, '');
+                        break;
+                }
+
+                var negativeCheck = clean.split('-');
+                var decimalCheck = clean.split('.');
+
+                if (!angular.isUndefined(negativeCheck[1])) {
+                    negativeCheck[1] = negativeCheck[1].slice(0, negativeCheck[1].length);
+                    clean = negativeCheck[0] + '-' + negativeCheck[1];
+                    if (negativeCheck[0].length > 0) {
+                        clean = negativeCheck[0];
+                    }
+                }
+
+                if (!angular.isUndefined(decimalCheck[1])) {
+                    decimalCheck[1] = decimalCheck[1].slice(0, angular.isUndefined(scope.decimalPlace) ? 2 : scope.decimalPlace);
+                    clean = decimalCheck[0] + '.' + decimalCheck[1];
+                }
+
+                if (val !== clean) {
+                    ngModel.$setViewValue(clean);
+                    ngModel.$render();
+                }
+                return clean;
+            });
+
+            // Bind keypress event to the element
+            el.bind('keypress', function (event) {
+                if (event.keyCode === 32) {
+                    event.preventDefault();
+                }
+            });
+        }
     }
 })()
 ;angular.module('app.core').run(['$templateCache', function($templateCache) {$templateCache.put('core.tpl.custom-select.html','<div class="btn-group">\r\n    <button \r\n            class="btn btn-default dropdown-toggle"\r\n            type="button"\r\n            data-toggle="dropdown"\r\n            aria-haspopup="true"\r\n            aria-expanded="false"\r\n            ng-disabled="disabled"\r\n            >{{placeholder}}\r\n        <span class="fa fa-angle-down pull-right"></span>\r\n    </button>\r\n<div class="dropdown-menu" ng-click="multiselect ? $event.stopPropagation() : null">\r\n    <input type="search" class="form-control" ng-model="searchFilter" placeholder="{{searchLabel}}">\r\n    <ul>  \r\n        <li ng-repeat="option in options | orderBy : displayName : false | selectFilter : displayName : searchFilter"\r\n            ng-click="setSelectedOption(this)"\r\n            ng-class="isSelected(this) ? \'selected\' : null"> {{option[displayName]}}\r\n        </li>         \r\n    </ul>\r\n    <hr ng-if="multiselect"/>\r\n<!--    <span ng-show="options.length == 0">No records found...</span>-->\r\n        <div class="col-md-1" ng-show="multiselect">\r\n            <span class="clickable" ng-click="selectAll()"><i class="fa fa-check-circle" aria-hidden="true"></i> Select all</span> &nbsp;&nbsp;\r\n            <span class="clickable" ng-click="clearAll()"><i class="fa fa-times-circle" aria-hidden="true"></i> Clear all</span>\r\n        </div>\r\n        \r\n    </div>    \r\n</div>\r\n');
