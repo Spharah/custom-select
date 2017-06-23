@@ -458,16 +458,18 @@
     'use strict';
     angular.module('app.core').directive('numbersOnly', numbersOnly);
 
-    numbersOnly.$inject = [];
+    numbersOnly.$inject = ['$timeout'];
 
-    function numbersOnly() {
+    function numbersOnly($timeout) {
         var directive = {
             restrict: 'A',
             replace: false,
             require: '?ngModel',
             scope: {
                 decimalPlace: '=',
-                allowNegative: '='
+                allowNegative: '=',
+                minNumber:'=',
+                maxNumber:'='
             },
             link: link
         };
@@ -531,6 +533,50 @@
                     event.preventDefault();
                 }
             });
+
+            el.bind('blur',function(){
+
+                var number;
+                if(!!ngModel.$viewValue)
+                    number = ngModel.$viewValue.replace(/[^0-9\.]/g, '');
+
+                validateNumber(number)
+            })
+
+            function validateNumber(number){
+
+                if(angular.isUndefined(scope.minNumber) && angular.isUndefined(scope.maxNumber))
+                {
+                    $timeout(function () {
+                    ngModel.$setValidity('exceedMaxNumber', true);
+                    ngModel.$setValidity('belowMinNumber', true);
+                     }, 1);                    
+                }
+
+                if(!angular.isUndefined(scope.minNumber)){
+                    if(number < scope.minNumber){                        
+                        setValidity('belowMinNumber', false);
+                    }                        
+                    else{
+                        setValidity('belowMinNumber', true);
+                    }                        
+                }
+
+                if(!angular.isUndefined(scope.maxNumber)){
+                    if(number > scope.maxNumber){
+                        setValidity('exceedMaxNumber', false);
+                    }                        
+                    else{
+                        setValidity('exceedMaxNumber', true);
+                    }                        
+                }   
+            }
+
+            function setValidity(validation, value){
+                $timeout(function(){
+                    ngModel.$setValidity(validation, value);
+                }, 1);
+            }
         }
     }
 })()
